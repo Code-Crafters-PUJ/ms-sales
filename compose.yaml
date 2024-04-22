@@ -26,9 +26,6 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
-    depends_on:
-      - db
-      - db_replica
 
   db:
     <<: *postgres-common
