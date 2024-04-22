@@ -17,6 +17,7 @@ mvn compile
 
 Compile the microservice, the database and the database replica:
 ```bash
+cd ..
 docker-compose build
 ```
 
