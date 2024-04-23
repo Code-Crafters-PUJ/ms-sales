@@ -13,6 +13,8 @@ Compile the Java microservice application:
 ```bash
 cd commercial.sales
 mvn compile
+mvn clean package
+
 ```
 
 Compile the microservice, the database and the database replica:
