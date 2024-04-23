@@ -15,7 +15,7 @@ services:
     container_name: commercial.sales
     image: java-app:1.0.0
     build:
-      context: ./commercial.sales
+      context: .
       dockerfile: Dockerfile
     ports:
       - ${PORT}:8080
@@ -47,7 +47,7 @@ services:
       -c hot_standby_feedback=on
     volumes:
       - db_volume_msadmin_users:/var/lib/postgresql/data
-      - ./db/:/docker-entrypoint-initdb.d
+      #- ./db/:/docker-entrypoint-initdb.d
     env_file:
       - .env
 
