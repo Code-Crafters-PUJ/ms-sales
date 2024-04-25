@@ -7,5 +7,7 @@ import com.stockwage.commercial.sales.entity.PaymentMethod;
 
 @Repository
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Long>{
+
+    PaymentMethod findByMethod(String method);
     
 } 
