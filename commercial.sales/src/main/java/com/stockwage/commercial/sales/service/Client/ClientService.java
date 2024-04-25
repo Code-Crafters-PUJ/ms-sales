@@ -8,7 +8,7 @@ public interface ClientService {
     Client getById(Long id);
     Client getByName(String name);
     Client save(Client client);
-    void delete(Long id);
+    boolean delete(Long id);
     Client update(Client client);
     List<Client> getAll();
 }
