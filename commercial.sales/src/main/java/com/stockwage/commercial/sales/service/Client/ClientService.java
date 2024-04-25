@@ -5,10 +5,10 @@ import java.util.List;
 import com.stockwage.commercial.sales.entity.Client;
 
 public interface ClientService {
-    Client getById(Integer id);
+    Client getById(Long id);
     Client getByName(String name);
     Client save(Client client);
-    void delete(Integer id);
+    void delete(Long id);
     Client update(Client client);
     List<Client> getAll();
 }
