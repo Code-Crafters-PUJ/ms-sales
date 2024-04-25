@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.service.Client;
+package com.stockwage.commercial.sales.service.client;
 
 import java.util.List;
 
