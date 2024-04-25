@@ -7,5 +7,7 @@ import com.stockwage.commercial.sales.entity.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>{
+
+    Client findByName(String name);
     
 } 
