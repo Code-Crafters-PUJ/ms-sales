@@ -33,6 +33,10 @@ public class Bill {
     @NotNull
     private String seller;
 
+    @NotNull
+    private Long branch_id;
+
+    @NotNull
     private String email;
 
     @NotNull

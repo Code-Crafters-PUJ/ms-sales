@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS paymentMethod (
 -- Create table bill
 CREATE TABLE IF NOT EXISTS bill (
   id SERIAL PRIMARY KEY,
+  branch_id INT NOT NULL,
   type CHAR(1) CHECK (type IN ('N', 'E')) NOT NULL,
   date DATE NOT NULL,
   seller VARCHAR(45) NOT NULL,
