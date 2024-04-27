@@ -23,12 +23,16 @@ CREATE TABLE IF NOT EXISTS bill (
   email VARCHAR(45),
   client_id INT NOT NULL,
   paymentMethod_id INT NOT NULL,
+  aiu BOOLEAN NOT NULL DEFAULT FALSE,
+  withholding_tax BOOLEAN NOT NULL DEFAULT FALSE,
+  charge_tax BOOLEAN NOT NULL DEFAULT FALSE,
   FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
   FOREIGN KEY (paymentMethod_id) REFERENCES paymentMethod(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+
 -- Table creation for 'product'
-CREATE TABLE IF NOT EXISTS mydb.product (
+CREATE TABLE IF NOT EXISTS product (
   id SERIAL PRIMARY KEY,
   name VARCHAR(45) NOT NULL,
   description VARCHAR(45) NOT NULL,
@@ -40,7 +44,7 @@ CREATE TABLE IF NOT EXISTS mydb.product (
 );
 
 -- Table creation for 'bill_has_product'
-CREATE TABLE IF NOT EXISTS mydb.bill_has_product (
+CREATE TABLE IF NOT EXISTS bill_has_product (
   bill_id INT NOT NULL,
   product_id INT NOT NULL,
   quantity INT,
