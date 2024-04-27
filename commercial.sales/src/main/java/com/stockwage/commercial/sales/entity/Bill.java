@@ -3,6 +3,8 @@ package com.stockwage.commercial.sales.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -72,7 +74,8 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "paymentMethod_id")
     private PaymentMethod paymentMethod;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "bill")
     private List<BillProduct> billProducts;
     
