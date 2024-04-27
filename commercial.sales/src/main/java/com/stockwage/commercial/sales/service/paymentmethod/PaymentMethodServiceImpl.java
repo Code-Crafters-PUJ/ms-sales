@@ -1,6 +1,7 @@
 package com.stockwage.commercial.sales.service.paymentmethod;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     private PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public PaymentMethod getById(Long id) {
-        return paymentMethodRepository.findById(id).orElse(null);
+    public Optional<PaymentMethod> getById(Long id) {
+        return paymentMethodRepository.findById(id);
     }
 
     @Override
-    public PaymentMethod getByMethod(String method) {
+    public Optional<PaymentMethod> getByMethod(String method) {
         return paymentMethodRepository.findByMethod(method);
     }
 
@@ -31,10 +32,11 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Override
     public boolean delete(Long id) {
-        try {
+        Optional<PaymentMethod> paymentMethodOptional = paymentMethodRepository.findById(id);
+        if (paymentMethodOptional.isPresent()) {
             paymentMethodRepository.deleteById(id);
             return true;
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
@@ -48,6 +50,5 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     public List<PaymentMethod> getAll() {
         return paymentMethodRepository.findAll();
     }
-
     
 }

@@ -1,9 +1,9 @@
 package com.stockwage.commercial.sales.service.client;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.stockwage.commercial.sales.entity.Client;
@@ -15,12 +15,12 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private ClientRepository clientRepository;
     @Override
-    public Client getById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+    public Optional<Client> getById(Long id) {
+        return clientRepository.findById(id);
     }
 
     @Override
-    public Client getByName(String name) {
+    public Optional<Client> getByName(String name) {
         return clientRepository.findByName(name);
     }
 
@@ -31,14 +31,15 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public boolean delete(Long id) {
-        try {
+        Optional<Client> clientOptional = clientRepository.findById(id);
+        if (clientOptional.isPresent()) {
             clientRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             return false;
         }
     }
-
+    
     @Override
     public Client update(Client client) {
         return clientRepository.save(client);
