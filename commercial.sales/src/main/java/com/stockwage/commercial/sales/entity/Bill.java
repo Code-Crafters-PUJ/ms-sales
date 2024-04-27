@@ -10,9 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -74,12 +73,7 @@ public class Bill {
     @JoinColumn(name = "paymentMethod_id")
     private PaymentMethod paymentMethod;
 
-    @ManyToMany
-    @JoinTable(
-        name = "bill_has_product",
-        joinColumns = @JoinColumn(name = "bill_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @OneToMany(mappedBy = "bill")
+    private List<BillProduct> billProducts;
     
 }
