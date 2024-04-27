@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS client (
 -- Create table paymentMethod
 CREATE TABLE IF NOT EXISTS paymentMethod (
   id SERIAL PRIMARY KEY,
-  method VARCHAR(45) NOT NULL
+  method VARCHAR(45) NOT NULL UNIQUE
 );
 
 -- Create table bill
@@ -27,11 +27,23 @@ CREATE TABLE IF NOT EXISTS bill (
   FOREIGN KEY (paymentMethod_id) REFERENCES paymentMethod(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
--- Create table bill_has_product
-CREATE TABLE IF NOT EXISTS bill_has_product (
-  bill_id INT NOT NULL,
+-- Table creation for 'product'
+CREATE TABLE IF NOT EXISTS mydb.product (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(45) NOT NULL,
+  description VARCHAR(45) NOT NULL,
   quantity INT NOT NULL,
-  product_id INT,
-  FOREIGN KEY (bill_id) REFERENCES bill(id) ON DELETE NO ACTION ON UPDATE NO ACTION
-  --FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  costPrice DOUBLE PRECISION NOT NULL,
+  salePrice DOUBLE PRECISION NOT NULL,
+  discount INT,
+  Category_id INT NOT NULL
+);
+
+-- Table creation for 'bill_has_product'
+CREATE TABLE IF NOT EXISTS mydb.bill_has_product (
+  bill_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT,
+  FOREIGN KEY (bill_id) REFERENCES mydb.bill(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  FOREIGN KEY (product_id) REFERENCES mydb.product(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
