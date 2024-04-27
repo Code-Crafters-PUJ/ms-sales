@@ -26,6 +26,7 @@ public class PaymentMethod {
     private String method;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.PERSIST)
     private List<Bill> bills = new ArrayList<>();
+    
 }

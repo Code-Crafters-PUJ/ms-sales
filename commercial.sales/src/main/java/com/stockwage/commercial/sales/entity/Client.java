@@ -26,7 +26,8 @@ public class Client {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
     private List<Bill> bills = new ArrayList<>();
+    
 
 }
