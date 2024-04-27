@@ -2,7 +2,6 @@ package com.stockwage.commercial.sales.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +23,13 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping("/all")
-    @Operation(summary = "Get all clients")
+    @Operation(summary = "Get all clients", description = "Retrieves a list of all clients")
     public List<Client> getAllClients() {
         return clientService.getAll();
     }
 
     @PostMapping("/add")
-    @Operation(description = "Add a new client")
+    @Operation(summary = "Add a new client", description = "Adds a new client to the system")
     @ApiResponse(responseCode = "201", description = "Client added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
     public ResponseEntity<Client> addClient(@RequestBody Client client) {
@@ -42,7 +41,7 @@ public class ClientController {
     }
 
     @GetMapping("/get")
-    @Operation(summary = "Get a client by ID")
+    @Operation(summary = "Get a client by ID", description = "Retrieves a client by its ID")
     @ApiResponse(responseCode = "200", description = "Client retrieved successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Client not found")
@@ -53,7 +52,7 @@ public class ClientController {
     }
 
     @GetMapping("/getByName")
-    @Operation(summary = "Get a client by name")
+    @Operation(summary = "Get a client by name", description = "Retrieves a client by its name")
     @ApiResponse(responseCode = "200", description = "Client retrieved successfully")
     @ApiResponse(responseCode = "404", description = "Client not found")
     public ResponseEntity<Client> getClientByName(@RequestParam String name) {
@@ -63,7 +62,7 @@ public class ClientController {
     }
 
     @PutMapping("/update/{id}")
-    @Operation(summary = "Update an existing client")
+    @Operation(summary = "Update an existing client", description = "Updates an existing client")
     @ApiResponse(responseCode = "200", description = "Client updated successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied or Bad request")
     @ApiResponse(responseCode = "404", description = "Client not found")
@@ -83,10 +82,10 @@ public class ClientController {
     }
 
     @DeleteMapping("/delete")
-    @Operation(summary = "Delete a client by ID")
+    @Operation(summary = "Delete a client by ID", description = "Deletes a client by its ID")
     @ApiResponse(responseCode = "200", description = "Client deleted successfully")
-    @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = @Content(mediaType = "*/*"))
-    @ApiResponse(responseCode = "404", description = "Client not found", content = @Content(mediaType = "*/*"))
+    @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
+    @ApiResponse(responseCode = "404", description = "Client not found")
     public ResponseEntity<Client> deleteClient(@RequestParam Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

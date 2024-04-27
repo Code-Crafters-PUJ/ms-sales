@@ -2,7 +2,6 @@ package com.stockwage.commercial.sales.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class PaymentMethodController {
     private PaymentMethodService paymentMethodService;
 
     @GetMapping("/all")
-    @Operation(summary = "Get all payment methods")
+    @Operation(summary = "Get all payment methods", description = "Retrieves a list of all payment methods")
     @ApiResponse(responseCode = "200", description = "Payment methods retrieved successfully")
     @ApiResponse(responseCode = "404", description = "No payment methods found")
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethods() {
@@ -34,7 +33,7 @@ public class PaymentMethodController {
     }
 
     @PostMapping("/add")
-    @Operation(description = "Add a new payment method")
+    @Operation(summary = "Add a new payment method", description = "Adds a new payment method")
     @ApiResponse(responseCode = "201", description = "Payment method added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
     public ResponseEntity<PaymentMethod> addPaymentMethod(@RequestBody PaymentMethod paymentMethod) {
@@ -46,7 +45,7 @@ public class PaymentMethodController {
     }
 
     @GetMapping("/get")
-    @Operation(summary = "Get a payment method by ID")
+    @Operation(summary = "Get a payment method by ID", description = "Retrieves a payment method by its ID")
     @ApiResponse(responseCode = "200", description = "Payment method retrieved successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
@@ -57,7 +56,7 @@ public class PaymentMethodController {
     }
 
     @PutMapping("/update/{id}")
-    @Operation(summary = "Update an existing payment method")
+    @Operation(summary = "Update an existing payment method", description = "Updates an existing payment method")
     @ApiResponse(responseCode = "200", description = "Payment method updated successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied or Bad request")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
@@ -77,7 +76,7 @@ public class PaymentMethodController {
     }
 
     @DeleteMapping("/delete")
-    @Operation(summary = "Delete a payment method by ID")
+    @Operation(summary = "Delete a payment method by ID", description = "Deletes a payment method by its ID")
     @ApiResponse(responseCode = "200", description = "Payment method deleted successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
