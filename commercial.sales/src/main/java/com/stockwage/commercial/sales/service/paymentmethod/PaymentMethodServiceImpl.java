@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stockwage.commercial.sales.entity.PaymentMethod;
+import com.stockwage.commercial.sales.exception.AlreadyExistsException;
 import com.stockwage.commercial.sales.repository.PaymentMethodRepository;
 
 @Service
@@ -27,6 +28,9 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Override
     public PaymentMethod save(PaymentMethod paymentMethod) {
+        if (paymentMethodRepository.existsByMethod(paymentMethod.getMethod())) {
+            throw new AlreadyExistsException("Payment method already exists");
+        }
         return paymentMethodRepository.save(paymentMethod);
     }
 

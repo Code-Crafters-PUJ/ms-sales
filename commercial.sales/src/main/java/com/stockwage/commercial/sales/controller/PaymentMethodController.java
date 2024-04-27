@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.stockwage.commercial.sales.entity.PaymentMethod;
+import com.stockwage.commercial.sales.exception.AlreadyExistsException;
 import com.stockwage.commercial.sales.service.paymentmethod.PaymentMethodService;
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +37,14 @@ public class PaymentMethodController {
     @Operation(summary = "Add a new payment method", description = "Adds a new payment method")
     @ApiResponse(responseCode = "201", description = "Payment method added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "409", description = "Payment method already exists")
     public ResponseEntity<PaymentMethod> addPaymentMethod(@RequestBody PaymentMethod paymentMethod) {
-        if (paymentMethod == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        try {
+            PaymentMethod newPaymentMethod = paymentMethodService.save(paymentMethod);
+            return new ResponseEntity<>(newPaymentMethod, HttpStatus.CREATED);
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        PaymentMethod newPaymentMethod = paymentMethodService.save(paymentMethod);
-        return new ResponseEntity<>(newPaymentMethod, HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
