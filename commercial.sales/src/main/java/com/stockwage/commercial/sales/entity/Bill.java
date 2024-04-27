@@ -44,6 +44,15 @@ public class Bill {
     private String email;
 
     @NotNull
+    private Double subtotal;
+
+    @NotNull
+    private Double discount;
+
+    @NotNull
+    private Double taxes;
+
+    @NotNull
     private boolean aiu;
 
     @NotNull
