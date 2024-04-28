@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.stockwage.commercial.sales.dto.BillDTO;
 import com.stockwage.commercial.sales.entity.Bill;
-import com.stockwage.commercial.sales.entity.Client;
 import com.stockwage.commercial.sales.service.bill.BillService;
 
 import java.util.Collections;
