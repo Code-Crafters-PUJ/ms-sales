@@ -1,5 +1,7 @@
 package com.stockwage.commercial.sales.service.email;
 
-public class EmailService {
-    
+import com.stockwage.commercial.sales.dto.BillDTO;
+
+public interface EmailService {
+    public void sendEmail(BillDTO bill);
 }
