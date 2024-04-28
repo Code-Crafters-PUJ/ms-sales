@@ -44,6 +44,8 @@ public class BillProductServiceImpl implements BillProductService{
         BillProduct billProduct = new BillProduct();
         billProduct.setBill(bill);
         billProduct.setQuantity(billProductDTO.getQuantity());
+        billProduct.setUnitPrice(product.getSalePrice());
+        billProduct.setDiscountPercentage(product.getDiscount());
         billProduct.setProduct(product);
         return billProductRepository.save(billProduct);
 
@@ -56,6 +58,8 @@ public class BillProductServiceImpl implements BillProductService{
         for (BillProduct billProduct : billProducts) {
             BillProductDTO billProductDTO = new BillProductDTO();
             billProductDTO.setQuantity(billProduct.getQuantity());
+            billProductDTO.setDiscountPercentage(billProduct.getDiscountPercentage());
+            billProductDTO.setUnitPrice(billProduct.getUnitPrice());
             billProductDTO.setBill_id(billProduct.getBill().getId());
             billProductDTO.setProduct_id(billProduct.getProduct().getId());
             billProductDTOs.add(billProductDTO);
@@ -66,10 +70,13 @@ public class BillProductServiceImpl implements BillProductService{
     @Override
     public List<BillProductDTO> getAllByBill(Long id) {
         List<BillProduct> billProducts = billProductRepository.findByBillId(id);
+        System.out.println("Despues del error ?");
         List<BillProductDTO> billProductDTOs = new ArrayList<>();
         for (BillProduct billProduct : billProducts) {
             BillProductDTO billProductDTO = new BillProductDTO();
             billProductDTO.setQuantity(billProduct.getQuantity());
+            billProductDTO.setDiscountPercentage(billProduct.getDiscountPercentage());
+            billProductDTO.setUnitPrice(billProduct.getUnitPrice());
             billProductDTO.setBill_id(billProduct.getBill().getId());
             billProductDTO.setProduct_id(billProduct.getProduct().getId());
             billProductDTOs.add(billProductDTO);

@@ -1,5 +1,6 @@
 package com.stockwage.commercial.sales.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,5 +29,15 @@ public class BillProduct {
     private Product product;
 
     @NotNull
+    @Column(name = "quantity")
     private Integer quantity;
+
+    @NotNull
+    @Column(name = "unit_price")
+    private Double unitPrice;
+
+    @NotNull
+    @Column(name = "discount_percentage")
+    private Integer discountPercentage;
+   
 }
