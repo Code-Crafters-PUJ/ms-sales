@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS bill (
   type CHAR(1) CHECK (type IN ('N', 'E')) NOT NULL,
   date DATE NOT NULL,
   seller VARCHAR(45) NOT NULL,
+  contact VARCHAR(45) NOT NULL,
   email VARCHAR(45),
   client_id INT NOT NULL,
   paymentMethod_id INT NOT NULL,

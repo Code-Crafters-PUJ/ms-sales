@@ -1,7 +1,7 @@
 package com.stockwage.commercial.sales.service.email;
 
-import com.stockwage.commercial.sales.dto.BillDTO;
+import org.springframework.http.ResponseEntity;
 
 public interface EmailService {
-    public void sendEmail(BillDTO bill);
+    public ResponseEntity<String> sendEmail(Long id);
 }
