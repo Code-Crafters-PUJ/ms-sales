@@ -60,18 +60,6 @@ public class Bill {
     private String email;
 
     @NotNull
-    @Column(name = "subtotal")
-    private Double subtotal;
-
-    @NotNull
-    @Column(name = "discount")
-    private Double discount;
-
-    @NotNull
-    @Column(name = "taxes")
-    private Double taxes;
-
-    @NotNull
     @Column(name = "aiu")
     private boolean aiu;
 
