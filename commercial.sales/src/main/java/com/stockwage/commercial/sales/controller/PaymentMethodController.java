@@ -47,12 +47,12 @@ public class PaymentMethodController {
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/{id}")
     @Operation(summary = "Get a payment method by ID", description = "Retrieves a payment method by its ID")
     @ApiResponse(responseCode = "200", description = "Payment method retrieved successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
-    public ResponseEntity<PaymentMethod> getPaymentMethodById(@RequestParam Long id) {
+    public ResponseEntity<PaymentMethod> getPaymentMethodById(@PathVariable Long id) {
         Optional<PaymentMethod> paymentMethod = paymentMethodService.getById(id);
         return paymentMethod.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -78,12 +78,12 @@ public class PaymentMethodController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Delete a payment method by ID", description = "Deletes a payment method by its ID")
     @ApiResponse(responseCode = "200", description = "Payment method deleted successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
-    public ResponseEntity<Void> deletePaymentMethod(@RequestParam Long id) {
+    public ResponseEntity<Void> deletePaymentMethod(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

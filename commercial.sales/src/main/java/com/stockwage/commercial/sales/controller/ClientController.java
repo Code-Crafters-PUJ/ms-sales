@@ -40,22 +40,22 @@ public class ClientController {
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/{id}")
     @Operation(summary = "Get a client by ID", description = "Retrieves a client by its ID")
     @ApiResponse(responseCode = "200", description = "Client retrieved successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Client not found")
-    public ResponseEntity<Client> getClientById(@RequestParam Long id) {
+    public ResponseEntity<Client> getClientById(@PathVariable Long id) {
         Optional<Client> client = clientService.getById(id);
         return client.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/getByName")
+    @GetMapping("/getByName/{name}")
     @Operation(summary = "Get a client by name", description = "Retrieves a client by its name")
     @ApiResponse(responseCode = "200", description = "Client retrieved successfully")
     @ApiResponse(responseCode = "404", description = "Client not found")
-    public ResponseEntity<Client> getClientByName(@RequestParam String name) {
+    public ResponseEntity<Client> getClientByName(@PathVariable String name) {
         Optional<Client> client = clientService.getByName(name);
         return client.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -81,12 +81,12 @@ public class ClientController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Delete a client by ID", description = "Deletes a client by its ID")
     @ApiResponse(responseCode = "200", description = "Client deleted successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Client not found")
-    public ResponseEntity<Client> deleteClient(@RequestParam Long id) {
+    public ResponseEntity<Client> deleteClient(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.transaction.Transactional;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -49,11 +49,11 @@ public class BillProductController {
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
-    @GetMapping("/allByBill")
+    @GetMapping("/allByBill/{billId}")
     @Operation(summary = "Get all products of the bills by bill", description = "Retrieves a list of all products by bill")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
     @ApiResponse(responseCode = "404", description = "No bills found")
-    public ResponseEntity<List<BillProductDTO>> getAllBillsByBill(@RequestParam Long billId) {
+    public ResponseEntity<List<BillProductDTO>> getAllBillsByBill(@PathVariable Long billId) {
         List<BillProductDTO> bills = billProductService.getAllByBill(billId);
         if (bills.isEmpty()) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);

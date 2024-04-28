@@ -36,11 +36,11 @@ public class BillController {
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
-    @GetMapping("/allByBranch")
+    @GetMapping("/allByBranch/{branchId}")
     @Operation(summary = "Get all bills by branch", description = "Retrieves a list of all bills by branch")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
     @ApiResponse(responseCode = "404", description = "No bills found")
-    public ResponseEntity<List<BillDTO>> getAllBillsByBranch(@RequestParam Long branchId) {
+    public ResponseEntity<List<BillDTO>> getAllBillsByBranch(@PathVariable Long branchId) {
         List<BillDTO> bills = billService.findByBranchId(branchId);
         if (bills.isEmpty()) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
@@ -60,13 +60,12 @@ public class BillController {
         return new ResponseEntity<>(newBill, HttpStatus.CREATED);
     }
 
-    //get
-    @GetMapping("/get")
+    @GetMapping("/get/{id}")
     @Operation(summary = "Get a bill by ID", description = "Retrieves a bill by its ID")
     @ApiResponse(responseCode = "200", description = "Bill retrieved successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Bill not found")
-    public ResponseEntity<BillDTO> getBillById(@RequestParam Long id) {
+    public ResponseEntity<BillDTO> getBillById(@PathVariable Long id) {
         Optional<BillDTO> bill = billService.getById(id);
         return bill.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
