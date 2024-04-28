@@ -5,29 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left-column, .right-column {
+            width: 48%;
+        }
+
+        .left-column p, .right-column p {
+            margin: 5px 0; /* Ajusta el margen arriba y abajo */
+        }
+
+        .total-section {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .total-item {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <h2>Bill</h2>
     
-    <div>
-        <p><strong>Client Name:</strong> %clientName%</p>
-        <p><strong>Client Contact:</strong> %clientContact%</p>
-        <p><strong>Client Email:</strong> %clientEmail%</p>
-        <p><strong>Date:</strong> %date%</p>
-        <p><strong>Seller:</strong> %seller%</p>
-        <p><strong>Branch ID:</strong> %branchId%</p>
-        <p><strong>Payment Method:</strong> %paymentMethod%</p>
+    <div class="container">
+        <div class="left-column">
+            <p><strong>Cliente:</strong> %clientName%</p>
+            <p><strong>Número de contacto:</strong> %clientContact%</p>
+            <p><strong>Correo electrónico:</strong> %clientEmail%</p>
+            <p><strong>Método de pago:</strong> %paymentMethod%</p>
+        </div>
+        <div class="right-column">
+            <p><strong>Fecha:</strong> %date%</p>
+            <p><strong>Vendedor:</strong> %seller%</p>
+            <p><strong>Sucursal:</strong> %branchId%</p>
+        </div>
     </div>
     
-    <table border="1">
+    <table border="1" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Discount (%)</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
                 <th>Subtotal</th>
+                <th>Descuento (%)</th>
+                <th>Descuento</th>
+                <th>Subtotal</th>
+                <th>AIU</th>
+                <th>IVA</th>
+                <th>Impuesto Retención</th>
+                <th>Impuestos</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
@@ -35,11 +74,13 @@
         </tbody>
     </table>
     
-    <div>
-        <p><strong>Total Bruto:</strong> %grossTotal%</p>
-        <p><strong>Descuentos:</strong> %totalDiscount%</p>
-        <p><strong>IVA (19%):</strong> %taxes%</p>
-        <p><strong>Total Neto:</strong> %netTotal%</p>
+    <div class="total-section">
+        <span class="total-item"><strong>Total Bruto:</strong>%grossTotal%</span>
+        <span class="total-item"><strong>Descuentos:</strong>%totalDiscount%</span>
+        <span class="total-item"><strong>Total IVA (19%):</strong>%chargeTaxTotal%</span>
+        <span class="total-item"><strong>Total retefuente (2.5%):</strong>%withholdingTaxTotal%</span>
+        <span class="total-item"><strong>Total de impuestos:</strong>%taxes%</span>
+        <span class="total-item"><strong>Total Neto:</strong>%netTotal%</span>
     </div>
 </body>
 </html>

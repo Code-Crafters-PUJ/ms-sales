@@ -144,6 +144,12 @@ private void generatePDF(Bill bill) {
             Double total = subtotal + chargeTax + withholdingTax;
 
 
+            grossTotal += subtotalWithoutTaxesDiscs;
+            discountsTotal += discount;
+            chargeTaxTotal += chargeTax;
+            withholdingTaxTotal += withholdingTax;
+            taxes += (chargeTax + withholdingTax);
+            
             tableRows.append("<tr>");
             tableRows.append("<td>").append(name).append("</td>");
             tableRows.append("<td>").append(description).append("</td>");
@@ -159,12 +165,6 @@ private void generatePDF(Bill bill) {
             tableRows.append("<td>").append(currencyFormat.format(chargeTax + withholdingTax)).append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(total)).append("</td>");
             tableRows.append("</tr>");
-
-            grossTotal += unitPrice * quantity;
-            discountsTotal += discount;
-            chargeTaxTotal += chargeTax;
-            withholdingTaxTotal += withholdingTax;
-            taxes += (chargeTax + withholdingTax);
         }
         taxes = chargeTaxTotal + withholdingTaxTotal;
 
