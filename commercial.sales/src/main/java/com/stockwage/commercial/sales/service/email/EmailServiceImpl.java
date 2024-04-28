@@ -23,6 +23,11 @@ import org.springframework.util.FileCopyUtils;
 import java.nio.file.Path;
 import java.text.NumberFormat;
 
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.stockwage.commercial.sales.entity.Bill;
 import com.stockwage.commercial.sales.entity.BillProduct;
@@ -98,38 +103,90 @@ private void generatePDF(Bill bill) {
 
         List<BillProduct> items = bill.getBillProducts();
         StringBuilder tableRows = new StringBuilder();
-        Double discount = 0.0;
-        Double taxes = 0.0;
-        Double subtotal = 0.0; 
-        Double grossTotal = 0.0;
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+
+        Double grossTotal = 0.0;
+        Double netTotal = 0.0;
+        Double discountsTotal = 0.0;
+        Double chargeTaxTotal = 0.0;
+        Double withholdingTaxTotal = 0.0;
+        Double taxes = 0.0;
+
+
         for (BillProduct item : items) {
-            Integer quantity = item.getQuantity();
             Product product = item.getProduct();
-            subtotal += (quantity * product.getSalePrice()); 
-            Double itemDiscount = subtotal * product.getDiscount();
-            discount += itemDiscount;
-            taxes += (subtotal - itemDiscount) * 0.19;
-            subtotal -= itemDiscount; 
+
+            String name = product.getName();
+            String description = product.getDescription();
+            Integer quantity = item.getQuantity();
+            Double unitPrice = item.getUnitPrice();
+            Integer discountPercentage = item.getDiscountPercentage();
+
+            Double chargeTax = 0.0;
+            Double withholdingTax = 0.0;
+            Double subtotal = 0.0;
+            Double discount = 0.0;
+
+            Double subtotalWithoutTaxesDiscs = 0.0;
+
+            subtotalWithoutTaxesDiscs = unitPrice * quantity;
+
+            discount = subtotalWithoutTaxesDiscs * discountPercentage / 100;
+
+            subtotal = subtotalWithoutTaxesDiscs - discount;
+
+            if(bill.isWithholdingTax()) // 2.5% withholding tax
+                withholdingTax = subtotal * 0.025;
+            
+            if(bill.isChargeTax()) // 19% tax free of charge
+                chargeTax = subtotal * 0.19;
+            
+            Double total = subtotal + chargeTax + withholdingTax;
+
+
             tableRows.append("<tr>");
-            tableRows.append("<td>").append(product.getName()).append("</td>");
-            tableRows.append("<td>").append(product.getDescription()).append("</td>");
+            tableRows.append("<td>").append(name).append("</td>");
+            tableRows.append("<td>").append(description).append("</td>");
             tableRows.append("<td>").append(quantity).append("</td>");
-            tableRows.append("<td>").append(currencyFormat.format(product.getSalePrice())).append("</td>");
-            tableRows.append("<td>").append(itemDiscount).append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(unitPrice)).append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(subtotalWithoutTaxesDiscs)).append("</td>");
+            tableRows.append("<td>").append(discountPercentage.toString() + " %").append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(discount)).append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(subtotal)).append("</td>");
+            tableRows.append("<td>").append("AIU").append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(chargeTax)).append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(withholdingTax)).append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(chargeTax + withholdingTax)).append("</td>");
+            tableRows.append("<td>").append(currencyFormat.format(total)).append("</td>");
             tableRows.append("</tr>");
-            grossTotal += subtotal;
+
+            grossTotal += unitPrice * quantity;
+            discountsTotal += discount;
+            chargeTaxTotal += chargeTax;
+            withholdingTaxTotal += withholdingTax;
+            taxes += (chargeTax + withholdingTax);
         }
-        Double netTotal = grossTotal - (discount + taxes);
+        taxes = chargeTaxTotal + withholdingTaxTotal;
+
+        netTotal = (grossTotal + taxes) - discountsTotal;
+
         templateContent = templateContent.replace("%grossTotal%", currencyFormat.format(grossTotal).toString());
-        templateContent = templateContent.replace("%totalDiscount%", currencyFormat.format(discount).toString());
+        templateContent = templateContent.replace("%totalDiscount%", currencyFormat.format(discountsTotal).toString());
         templateContent = templateContent.replace("%taxes%", currencyFormat.format(taxes).toString());
+        templateContent = templateContent.replace("%chargeTaxTotal%", currencyFormat.format(chargeTaxTotal).toString());
+        templateContent = templateContent.replace("%withholdingTaxTotal%", currencyFormat.format(withholdingTaxTotal).toString());
         templateContent = templateContent.replace("%netTotal%", currencyFormat.format(netTotal).toString());
         templateContent = templateContent.replace("%tableRows%", tableRows.toString());
 
         try (OutputStream outputStream = new FileOutputStream(pdfFile)) {
-            HtmlConverter.convertToPdf(templateContent, outputStream);
+            PdfWriter writer = new PdfWriter(outputStream);
+            PageSize pageSize = PageSize.A4;
+            pageSize = pageSize.rotate();  
+            PdfDocument pdf = new PdfDocument(writer);
+            pdf.setDefaultPageSize(pageSize);
+            ConverterProperties properties = new ConverterProperties();
+            properties.setBaseUri(".");
+            HtmlConverter.convertToPdf(templateContent, pdf, properties);
         }
 
     } catch (Exception e) {
