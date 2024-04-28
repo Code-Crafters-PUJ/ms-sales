@@ -45,7 +45,6 @@ public class BillProductServiceImpl implements BillProductService{
         billProduct.setBill(bill);
         billProduct.setQuantity(billProductDTO.getQuantity());
         billProduct.setProduct(product);
-
         return billProductRepository.save(billProduct);
 
     }

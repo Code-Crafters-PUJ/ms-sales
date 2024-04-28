@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stockwage.commercial.sales.dto.BillProductDTO;
 import com.stockwage.commercial.sales.entity.BillProduct;
 import com.stockwage.commercial.sales.service.billproduct.BillProductService;
+import com.stockwage.commercial.sales.service.product.ProductService;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.transaction.Transactional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +33,9 @@ public class BillProductController {
 
     @Autowired
     private BillProductService billProductService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/all")
     @Operation(summary = "Get all products of the bills", description = "Retrieves a list of all bills's products")
@@ -57,6 +62,7 @@ public class BillProductController {
     }
 
     @PostMapping("/addToBill")
+    @Transactional
     @Operation(summary = "Add a new product to the bill", description = "Adds a new product to the bill")
     @ApiResponse(responseCode = "201", description = "Product added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
@@ -65,6 +71,7 @@ public class BillProductController {
         if (newBillProduct == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        productService.updateProductQuantity(billProductDTO.getProduct_id(), billProductDTO.getQuantity());
         return new ResponseEntity<>(newBillProduct, HttpStatus.CREATED);
     }
 
