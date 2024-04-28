@@ -24,9 +24,6 @@ CREATE TABLE IF NOT EXISTS bill (
   email VARCHAR(45),
   client_id INT NOT NULL,
   paymentMethod_id INT NOT NULL,
-  subtotal DOUBLE PRECISION NOT NULL,
-  discount DOUBLE PRECISION NOT NULL DEFAULT 0,
-  taxes DOUBLE PRECISION NOT NULL DEFAULT 0,
   aiu BOOLEAN NOT NULL DEFAULT FALSE,
   withholding_tax BOOLEAN NOT NULL DEFAULT FALSE,
   charge_tax BOOLEAN NOT NULL DEFAULT FALSE,
@@ -34,8 +31,7 @@ CREATE TABLE IF NOT EXISTS bill (
   FOREIGN KEY (paymentMethod_id) REFERENCES paymentMethod(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
-
--- Table creation for 'product'
+-- Create table product
 CREATE TABLE IF NOT EXISTS product (
   id SERIAL PRIMARY KEY,
   name VARCHAR(45) NOT NULL,
@@ -47,11 +43,14 @@ CREATE TABLE IF NOT EXISTS product (
   Category_id INT NOT NULL
 );
 
--- Table creation for 'bill_has_product'
+-- Create table bill_has_product
 CREATE TABLE IF NOT EXISTS bill_has_product (
+  id SERIAL PRIMARY KEY,
   bill_id INT NOT NULL,
   product_id INT NOT NULL,
-  quantity INT,
+  quantity INT NOT NULL,
+  unit_price DOUBLE PRECISION NOT NULL,
+  discount_percentage INT NOT NULL,
   FOREIGN KEY (bill_id) REFERENCES bill(id) ON DELETE CASCADE ON UPDATE NO ACTION,
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
