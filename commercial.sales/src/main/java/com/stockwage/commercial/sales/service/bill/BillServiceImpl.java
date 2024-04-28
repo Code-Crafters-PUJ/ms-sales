@@ -62,7 +62,7 @@ public class BillServiceImpl implements BillService {
         bill = Bill.builder()
             .type(billType)
             .date(billDTO.getDate())
-            .description(billDTO.getDescription())
+            .contact(billDTO.getContact())
             .seller(billDTO.getSeller())
             .branchId(billDTO.getBranchId())
             .email(billDTO.getEmail())
@@ -109,7 +109,7 @@ public class BillServiceImpl implements BillService {
             Bill existingBill = existingBillOptional.get();
             existingBill.setType(billType);
             existingBill.setDate(billDTO.getDate());
-            existingBill.setDescription(billDTO.getDescription());
+            existingBill.setContact(billDTO.getContact());
             existingBill.setSeller(billDTO.getSeller());
             existingBill.setBranchId(billDTO.getBranchId());
             existingBill.setEmail(billDTO.getEmail());
@@ -156,7 +156,7 @@ public class BillServiceImpl implements BillService {
         String type = bill.getType().name();
         billDTO.setType(type);
         billDTO.setDate(bill.getDate());
-        billDTO.setDescription(bill.getDescription());
+        billDTO.setContact(bill.getContact());
         billDTO.setSeller(bill.getSeller());
         billDTO.setBranchId(bill.getBranchId());
         billDTO.setEmail(bill.getEmail());

@@ -44,8 +44,8 @@ public class Bill {
     private LocalDate date;
 
     @NotNull
-    @Column(name = "description")
-    private String description;
+    @Column(name = "contact")
+    private String contact;
 
     @NotNull
     @Column(name = "seller")

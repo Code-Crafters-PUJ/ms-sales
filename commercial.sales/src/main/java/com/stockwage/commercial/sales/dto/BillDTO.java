@@ -14,7 +14,7 @@ public class BillDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    private String description;
+    private String contact;
 
     private String seller;
 
