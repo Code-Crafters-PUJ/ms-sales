@@ -26,7 +26,6 @@ import java.text.NumberFormat;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.stockwage.commercial.sales.entity.Bill;
@@ -159,7 +158,6 @@ private void generatePDF(Bill bill) {
             tableRows.append("<td>").append(discountPercentage.toString() + " %").append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(discount)).append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(subtotal)).append("</td>");
-            tableRows.append("<td>").append("AIU").append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(chargeTax)).append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(withholdingTax)).append("</td>");
             tableRows.append("<td>").append(currencyFormat.format(chargeTax + withholdingTax)).append("</td>");
