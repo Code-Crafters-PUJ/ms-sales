@@ -22,8 +22,6 @@ public class BillDTO {
 
     private String email;
 
-    private boolean aiu;
-
     private boolean withholdingTax;
 
     private boolean chargeTax;

@@ -66,7 +66,6 @@ public class BillServiceImpl implements BillService {
             .seller(billDTO.getSeller())
             .branchId(billDTO.getBranchId())
             .email(billDTO.getEmail())
-            .aiu(billDTO.isAiu())
             .withholdingTax(billDTO.isWithholdingTax())
             .chargeTax(billDTO.isChargeTax())
             .client(client)
@@ -110,7 +109,6 @@ public class BillServiceImpl implements BillService {
             existingBill.setSeller(billDTO.getSeller());
             existingBill.setBranchId(billDTO.getBranchId());
             existingBill.setEmail(billDTO.getEmail());
-            existingBill.setAiu(billDTO.isAiu());
             existingBill.setWithholdingTax(billDTO.isWithholdingTax());
             existingBill.setChargeTax(billDTO.isChargeTax());
             existingBill.setClient(optClient.get());
@@ -154,7 +152,6 @@ public class BillServiceImpl implements BillService {
         billDTO.setSeller(bill.getSeller());
         billDTO.setBranchId(bill.getBranchId());
         billDTO.setEmail(bill.getEmail());
-        billDTO.setAiu(bill.isAiu());
         billDTO.setWithholdingTax(bill.isWithholdingTax());
         billDTO.setChargeTax(bill.isChargeTax());
         billDTO.setClientId(bill.getClient().getId());

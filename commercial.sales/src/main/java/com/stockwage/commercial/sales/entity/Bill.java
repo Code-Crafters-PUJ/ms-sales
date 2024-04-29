@@ -60,10 +60,6 @@ public class Bill {
     private String email;
 
     @NotNull
-    @Column(name = "aiu")
-    private boolean aiu;
-
-    @NotNull
     @Column(name = "withholding_tax")
     private boolean withholdingTax;
 
