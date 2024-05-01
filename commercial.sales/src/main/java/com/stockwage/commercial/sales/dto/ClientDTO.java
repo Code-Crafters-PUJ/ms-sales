@@ -13,4 +13,5 @@ import lombok.Setter;
 @Builder
 public class ClientDTO {
     private String name;
+    private String card_id;
 }

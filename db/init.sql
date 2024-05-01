@@ -4,6 +4,7 @@ SELECT pg_create_physical_replication_slot('replication_slot');
 -- Create table client
 CREATE TABLE IF NOT EXISTS client (
   id SERIAL PRIMARY KEY,
+  card_id VARCHAR(45) NOT NULL UNIQUE,
   name VARCHAR(45) NOT NULL
 );
 

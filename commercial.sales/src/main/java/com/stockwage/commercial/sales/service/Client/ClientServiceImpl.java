@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.stockwage.commercial.sales.dto.ClientDTO;
@@ -20,8 +22,8 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private ModelMapper modelMapper;
 
-    public Client DtoToEntity(ClientDTO personaDTO) {
-        return modelMapper.map(personaDTO, Client.class);
+    public Client DtoToEntity(ClientDTO clientDTO) {
+        return modelMapper.map(clientDTO, Client.class);
     }
 
     @Override
@@ -30,13 +32,17 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Optional<Client> getByName(String name) {
-        return clientRepository.findByName(name);
+    public Optional<Client> getByCardId(String cardId) {
+        return clientRepository.findByCardId(cardId);
     }
 
     @Override
     public Client save(Client client) {
-        return clientRepository.save(client);
+        try {
+            return clientRepository.save(client);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateKeyException("Client with the same name already exists", e);
+        }
     }
 
     @Override
@@ -44,15 +50,21 @@ public class ClientServiceImpl implements ClientService{
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isPresent()) {
             clientRepository.deleteById(id);
+            System.out.println("Client deleted successfully");
             return true;
         } else {
+            System.out.println("Client not found");
             return false;
         }
     }
     
     @Override
     public Client update(Client client) {
-        return clientRepository.save(client);
+        try {
+            return clientRepository.save(client);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateKeyException("Client with the same card id already exists", e);
+        }
     }
 
     @Override

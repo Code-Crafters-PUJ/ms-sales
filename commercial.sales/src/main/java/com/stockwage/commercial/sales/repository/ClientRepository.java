@@ -3,6 +3,7 @@ package com.stockwage.commercial.sales.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.stockwage.commercial.sales.entity.Client;
@@ -10,6 +11,7 @@ import com.stockwage.commercial.sales.entity.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>{
 
-    Optional<Client> findByName(String name);
+    @Query("SELECT c FROM Client c WHERE c.card_id = :cardId")
+    Optional<Client> findByCardId(String cardId);
     
 } 
