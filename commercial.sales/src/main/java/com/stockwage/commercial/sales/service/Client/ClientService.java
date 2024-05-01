@@ -7,7 +7,7 @@ import com.stockwage.commercial.sales.dto.ClientDTO;
 import com.stockwage.commercial.sales.entity.Client;
 
 public interface ClientService {
-    Client DtoToEntity(ClientDTO personaDTO);
+    Client DtoToEntity(ClientDTO clientDTO);
     Optional<Client> getById(Long id);
     Optional<Client> getByCardId(String cardId);
     Client save(Client client);

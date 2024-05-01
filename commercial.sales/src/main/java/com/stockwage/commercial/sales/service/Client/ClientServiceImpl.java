@@ -22,6 +22,7 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Override
     public Client DtoToEntity(ClientDTO clientDTO) {
         return modelMapper.map(clientDTO, Client.class);
     }
@@ -38,11 +39,10 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public Client save(Client client) {
-        try {
-            return clientRepository.save(client);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateKeyException("Client with the same name already exists", e);
+        if(clientRepository.existsByCardId(client.getCard_id())) {
+            throw new DuplicateKeyException("Client already exists");
         }
+        return clientRepository.save(client);
     }
 
     @Override

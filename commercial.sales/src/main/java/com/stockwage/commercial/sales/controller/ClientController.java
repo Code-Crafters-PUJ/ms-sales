@@ -36,7 +36,6 @@ public class ClientController {
     @ApiResponse(responseCode = "201", description = "Client added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "409", description = "Conflict: Duplicate entry")
-    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Client> addClient(@RequestBody ClientDTO client) {
         if (client == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
