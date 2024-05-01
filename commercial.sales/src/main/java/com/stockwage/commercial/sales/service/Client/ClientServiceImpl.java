@@ -3,9 +3,11 @@ package com.stockwage.commercial.sales.service.client;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stockwage.commercial.sales.dto.ClientDTO;
 import com.stockwage.commercial.sales.entity.Client;
 import com.stockwage.commercial.sales.repository.ClientRepository;
 
@@ -14,6 +16,14 @@ public class ClientServiceImpl implements ClientService{
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public Client DtoToEntity(ClientDTO personaDTO) {
+        return modelMapper.map(personaDTO, Client.class);
+    }
+
     @Override
     public Optional<Client> getById(Long id) {
         return clientRepository.findById(id);
