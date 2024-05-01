@@ -3,9 +3,11 @@ package com.stockwage.commercial.sales.service.paymentmethod;
 import java.util.List;
 import java.util.Optional;
 
+import com.stockwage.commercial.sales.dto.PaymentMethodDTO;
 import com.stockwage.commercial.sales.entity.PaymentMethod;
 
 public interface PaymentMethodService {
+    PaymentMethod DtoToEntity(PaymentMethodDTO paymentMethodDTO);
     Optional<PaymentMethod> getById(Long id);
     Optional<PaymentMethod> getByMethod(String method);
     PaymentMethod save(PaymentMethod paymentMethod);
