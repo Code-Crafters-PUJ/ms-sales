@@ -26,6 +26,7 @@ public class ClientController {
 
     @GetMapping("/all")
     @Operation(summary = "Get all clients", description = "Retrieves a list of all clients")
+    @ApiResponse(responseCode = "200", description = "Clients retrieved successfully")
     public ResponseEntity<List<Client>> getAllClients() {
         List<Client> clients = clientService.getAll();
         return new ResponseEntity<>(clients, HttpStatus.OK);
@@ -65,6 +66,7 @@ public class ClientController {
     @GetMapping("/getByCardId/{cardId}")
     @Operation(summary = "Get a client by card id", description = "Retrieves a client by its card id")
     @ApiResponse(responseCode = "200", description = "Client retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Client not found")
     public ResponseEntity<Client> getClientByCardId(@PathVariable String cardId) {
         if (cardId == null || cardId.isEmpty()) {
@@ -81,7 +83,6 @@ public class ClientController {
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied or Bad request")
     @ApiResponse(responseCode = "404", description = "Client not found")
     @ApiResponse(responseCode = "409", description = "Conflict: Duplicate entry")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody ClientDTO updatedClient) {
         if (id == null || updatedClient == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

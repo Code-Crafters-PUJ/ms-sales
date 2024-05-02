@@ -67,7 +67,7 @@ public class PaymentMethodController {
     @ApiResponse(responseCode = "200", description = "Payment method updated successfully")
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied or Bad request")
     @ApiResponse(responseCode = "404", description = "Payment method not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "409", description = "Payment method already exists")
     public ResponseEntity<PaymentMethod> updatePaymentMethod(@PathVariable Long id, @RequestBody PaymentMethodDTO updatedPaymentMethod) {
         if (id == null || updatedPaymentMethod == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

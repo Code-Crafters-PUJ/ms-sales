@@ -1,7 +1,7 @@
 package com.stockwage.commercial.sales.controller;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stockwage.commercial.sales.dto.BillDTO;
 import com.stockwage.commercial.sales.dto.BillProductDTO;
 import com.stockwage.commercial.sales.entity.BillProduct;
+import com.stockwage.commercial.sales.service.bill.BillService;
 import com.stockwage.commercial.sales.service.billproduct.BillProductService;
 import com.stockwage.commercial.sales.service.product.ProductService;
 
@@ -37,27 +39,27 @@ public class BillProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private BillService billService;
+
     @GetMapping("/all")
     @Operation(summary = "Get all products of the bills", description = "Retrieves a list of all bills's products")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
-    @ApiResponse(responseCode = "404", description = "No bills found")
     public ResponseEntity<List<BillProductDTO>> getAllBills() {
         List<BillProductDTO> bills = billProductService.getAll();
-        if (bills.isEmpty()) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
     @GetMapping("/allByBill/{billId}")
     @Operation(summary = "Get all products of the bills by bill", description = "Retrieves a list of all products by bill")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
-    @ApiResponse(responseCode = "404", description = "No bills found")
-    public ResponseEntity<List<BillProductDTO>> getAllBillsByBill(@PathVariable Long billId) {
-        List<BillProductDTO> bills = billProductService.getAllByBill(billId);
-        if (bills.isEmpty()) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+    @ApiResponse(responseCode = "404", description = "No bill found")
+    public ResponseEntity<List<BillProductDTO>> getAllProductsByBill(@PathVariable Long billId) {
+        Optional<BillDTO> existingBillOptional = billService.getById(billId);
+        if (!existingBillOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        List<BillProductDTO> bills = billProductService.getAllByBill(billId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
@@ -73,6 +75,28 @@ public class BillProductController {
         }
         productService.updateProductQuantity(billProductDTO.getProduct_id(), billProductDTO.getQuantity());
         return new ResponseEntity<>(newBillProduct, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addProductsToBill/{billId}")
+    @Transactional
+    @Operation(summary = "Add products to a bill", description = "Adds multiple products to a bill")
+    @ApiResponse(responseCode = "201", description = "Products added to bill successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    public ResponseEntity<?> addProductsToBill(@RequestBody List<BillProductDTO> billProducts, @PathVariable Long billId) {
+        if (billProducts == null || billProducts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        for (BillProductDTO billProductDTO : billProducts) {
+            if (billId == null || billProductDTO.getProduct_id() == null || billProductDTO.getQuantity() == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            BillProduct newBillProduct = billProductService.save(billProductDTO);
+            if (newBillProduct == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            productService.updateProductQuantity(billProductDTO.getProduct_id(), billProductDTO.getQuantity());
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     
