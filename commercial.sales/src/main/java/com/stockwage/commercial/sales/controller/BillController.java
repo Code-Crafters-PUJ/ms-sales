@@ -27,24 +27,16 @@ public class BillController {
     @GetMapping("/all")
     @Operation(summary = "Get all bills", description = "Retrieves a list of all bills")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
-    @ApiResponse(responseCode = "404", description = "No bills found")
     public ResponseEntity<List<BillDTO>> getAllBills() {
         List<BillDTO> bills = billService.getAll();
-        if (bills.isEmpty()) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
     @GetMapping("/allByBranch/{branchId}")
     @Operation(summary = "Get all bills by branch", description = "Retrieves a list of all bills by branch")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
-    @ApiResponse(responseCode = "404", description = "No bills found")
     public ResponseEntity<List<BillDTO>> getAllBillsByBranch(@PathVariable Long branchId) {
         List<BillDTO> bills = billService.findByBranchId(branchId);
-        if (bills.isEmpty()) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
     
@@ -53,7 +45,7 @@ public class BillController {
     @ApiResponse(responseCode = "201", description = "Bill added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
     public ResponseEntity<?> addBill(@RequestBody BillDTO billDTO) {
-        Bill newBill = billService.save(billDTO);
+        BillDTO newBill = billService.save(billDTO);
         if (newBill == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -66,6 +58,9 @@ public class BillController {
     @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
     @ApiResponse(responseCode = "404", description = "Bill not found")
     public ResponseEntity<BillDTO> getBillById(@PathVariable Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Optional<BillDTO> bill = billService.getById(id);
         return bill.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

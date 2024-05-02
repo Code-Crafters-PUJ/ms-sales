@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class BillDTO {
-    
+    private Long id;
     private String type;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

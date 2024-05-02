@@ -67,14 +67,16 @@ public class Bill {
     @Column(name = "charge_tax")
     private boolean chargeTax;
 
-    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "paymentmethod_id")
     private PaymentMethod paymentMethod;
+    
     
     @JsonIgnore
     @OneToMany(mappedBy = "bill")

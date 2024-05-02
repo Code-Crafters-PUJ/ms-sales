@@ -40,7 +40,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill save(BillDTO billDTO) {
+    public BillDTO save(BillDTO billDTO) {
         Bill bill = new Bill();
         Optional<Client> optClient = clientRepository.findById(billDTO.getClientId());
         Optional<PaymentMethod> optionalPaymentMethod = paymentMethodRepository.findById(billDTO.getPaymentMethodId());
@@ -72,7 +72,9 @@ public class BillServiceImpl implements BillService {
             .paymentMethod(paymentMethod) 
             .build();
 
-        return billRepository.save(bill);
+        billRepository.save(bill);
+        billDTO.setId(bill.getId());
+        return billDTO;
     }
 
     @Override
