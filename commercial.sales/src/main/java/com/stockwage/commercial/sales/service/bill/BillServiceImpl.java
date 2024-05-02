@@ -33,6 +33,7 @@ public class BillServiceImpl implements BillService {
         Optional<Bill> bill = billRepository.findById(id);
         if (bill.isPresent()) {
             BillDTO billDTO = convertToDTO(bill.get());
+            billDTO.setId(bill.get().getId());
             return Optional.of(billDTO);
         } else {
             return Optional.empty();
@@ -129,6 +130,7 @@ public class BillServiceImpl implements BillService {
         List<BillDTO> billDTOs = new ArrayList<>();
         for (Bill bill : bills) {
             BillDTO billDTO = convertToDTO(bill);
+            billDTO.setId(bill.getId());
             billDTOs.add(billDTO);
         }
         return billDTOs;
@@ -140,6 +142,7 @@ public class BillServiceImpl implements BillService {
         List<BillDTO> billDTOs = new ArrayList<>();
         for (Bill bill : bills) {
             BillDTO billDTO = convertToDTO(bill);
+            billDTO.setId(bill.getId());
             billDTOs.add(billDTO);
         }
         return billDTOs;

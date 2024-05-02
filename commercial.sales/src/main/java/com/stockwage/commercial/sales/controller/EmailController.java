@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stockwage.commercial.sales.entity.Client;
-import com.stockwage.commercial.sales.service.client.ClientService;
+import com.stockwage.commercial.sales.dto.BillDTO;
+import com.stockwage.commercial.sales.service.bill.BillService;
 import com.stockwage.commercial.sales.service.email.EmailService;
 
 import io.swagger.annotations.Api;
@@ -27,7 +27,7 @@ public class EmailController {
     private EmailService emailService;
 
     @Autowired
-    private ClientService clientService;
+    private BillService billService;
 
     @PostMapping("/send/{id}")
     @Operation(summary = "Send an email to a client", description = "Sends an email to the client with the specified ID")
@@ -38,8 +38,8 @@ public class EmailController {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Optional<Client> existingClientOptional = clientService.getById(id);
-        if (existingClientOptional.isPresent()) {
+        Optional<BillDTO> existingBillOptional = billService.getById(id);
+        if (existingBillOptional.isPresent()) {
             ResponseEntity<String> response = emailService.sendEmail(id);
             return response;
         } else {
