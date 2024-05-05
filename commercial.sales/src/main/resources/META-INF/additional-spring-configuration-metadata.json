@@ -1,0 +1,7 @@
+{
+  "properties": [{
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "The secret used for signing and verifying JWT tokens in the application. Ensure that this value is secure and unique for your application. It is recommended to use a long and complex string to enhance the security of your JWT tokens."
+  }]
+}
