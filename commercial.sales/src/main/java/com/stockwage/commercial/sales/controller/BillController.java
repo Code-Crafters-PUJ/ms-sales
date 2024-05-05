@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.stockwage.commercial.sales.dto.BillDTO;
@@ -19,10 +20,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/bill")
 @Api(tags = "Bill Management", description = "Endpoints for managing bills")
+@PreAuthorize("hasRole('Raiz') or hasRole('Ventas')")
 public class BillController {
     
     @Autowired
     private BillService billService;
+
 
     @GetMapping("/all")
     @Operation(summary = "Get all bills", description = "Retrieves a list of all bills")

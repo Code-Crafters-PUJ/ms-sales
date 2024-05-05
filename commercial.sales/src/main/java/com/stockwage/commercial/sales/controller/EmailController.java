@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/email")
 @Api(tags = "Email Management", description = "Endpoint for sending emails")
+@PreAuthorize("hasRole('Raiz') or hasRole('Ventas')")
 public class EmailController {
     
     @Autowired

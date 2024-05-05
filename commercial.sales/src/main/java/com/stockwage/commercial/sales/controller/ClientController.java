@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.stockwage.commercial.sales.dto.ClientDTO;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/clients")
 @Api(tags = "Client Management", description = "Endpoints for managing clients")
+@PreAuthorize("hasRole('Raiz') or hasRole('Ventas')")
 public class ClientController {
 
     @Autowired

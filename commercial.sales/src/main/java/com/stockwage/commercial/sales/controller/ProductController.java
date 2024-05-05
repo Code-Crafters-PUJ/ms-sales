@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.exception.AlreadyExistsException;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/product")
 @Api(tags = "Product Management", description = "Endpoints for managing products")
+@PreAuthorize("hasRole('Raiz') or hasRole('Ventas')")
 public class ProductController {
 
     @Autowired
