@@ -13,17 +13,17 @@ Compile the Java microservice application:
 ```bash
 cd commercial.sales
 mvn compile
-mvn clean package
+mvn clean package -DskipTests
 
 ```
 
 Compile the microservice, the database and the database replica:
 ```bash
 cd ..
-docker-compose build
+docker compose -f compose-app.yml build
 ```
 
 Start the microservice, the database and the database replica:
 ```bash
-docker compose up -d
+docker compose -f compose-app.yml up
 ```
