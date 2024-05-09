@@ -40,4 +40,13 @@ public class BillProduct {
     @Column(name = "discount_percentage")
     private Integer discountPercentage;
    
+    @Override
+    public String toString() {
+        return "BillProduct{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", unitPrice=" + unitPrice +
+                ", discountPercentage=" + discountPercentage +
+                '}';
+    }
 }

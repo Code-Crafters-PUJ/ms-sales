@@ -28,10 +28,10 @@ public class BillProductServiceImpl implements BillProductService{
     private ProductRepository productRepository;
     
     @Override
-    public BillProduct save(BillProductDTO billProductDTO) {
+    public BillProduct save(BillProductDTO billProductDTO, Long billId) {
         Bill bill = new Bill();
         Product product = new Product();
-        Optional<Bill> optionalBill = billRepository.findById(billProductDTO.getBill_id());
+        Optional<Bill> optionalBill = billRepository.findById(billId);
         Optional<Product> optionalProduct = productRepository.findById(billProductDTO.getProduct_id());
 
         if (!optionalBill.isPresent() || !optionalProduct.isPresent()) {
@@ -70,7 +70,6 @@ public class BillProductServiceImpl implements BillProductService{
     @Override
     public List<BillProductDTO> getAllByBill(Long id) {
         List<BillProduct> billProducts = billProductRepository.findByBillId(id);
-        System.out.println("Despues del error ?");
         List<BillProductDTO> billProductDTOs = new ArrayList<>();
         for (BillProduct billProduct : billProducts) {
             BillProductDTO billProductDTO = new BillProductDTO();

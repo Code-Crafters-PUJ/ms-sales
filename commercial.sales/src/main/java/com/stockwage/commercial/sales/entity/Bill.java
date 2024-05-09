@@ -74,4 +74,17 @@ public class Bill {
     @OneToMany(mappedBy = "bill")
     private List<BillProduct> billProducts;
     
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", type=" + type +
+                ", date=" + date +
+                ", seller='" + seller + '\'' +
+                ", branchId=" + branchId +
+                ", withholdingTax=" + withholdingTax +
+                ", chargeTax=" + chargeTax +
+                '}';
+    }
+
 }

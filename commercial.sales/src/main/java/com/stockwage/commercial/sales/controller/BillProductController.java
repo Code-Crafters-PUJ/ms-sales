@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/billproduct")
 @Api(tags = "Bill's Products Management", description = "Endpoints for managing bill's products")
@@ -61,17 +59,18 @@ public class BillProductController {
         if (!existingBillOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        System.out.println("Aqui estamos");
         List<BillProductDTO> bills = billProductService.getAllByBill(billId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
-    @PostMapping("/addToBill")
+    @PostMapping("/addToBill/{billId}")
     @Transactional
     @Operation(summary = "Add a new product to the bill", description = "Adds a new product to the bill")
     @ApiResponse(responseCode = "201", description = "Product added successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
-    public ResponseEntity<?> addBill(@RequestBody BillProductDTO billProductDTO) {
-        BillProduct newBillProduct = billProductService.save(billProductDTO);
+    public ResponseEntity<?> addBill(@RequestBody BillProductDTO billProductDTO, @PathVariable Long billId) {
+        BillProduct newBillProduct = billProductService.save(billProductDTO, billId);
         if (newBillProduct == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -92,7 +91,7 @@ public class BillProductController {
             if (billId == null || billProductDTO.getProduct_id() == null || billProductDTO.getQuantity() == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            BillProduct newBillProduct = billProductService.save(billProductDTO);
+            BillProduct newBillProduct = billProductService.save(billProductDTO, billId);
             if (newBillProduct == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -104,3 +103,4 @@ public class BillProductController {
     
     
 }
+
