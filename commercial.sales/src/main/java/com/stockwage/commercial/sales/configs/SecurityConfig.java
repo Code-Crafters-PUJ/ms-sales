@@ -27,13 +27,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeRequests().anyRequest().permitAll()
-                .and()
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint));
-                // Custom JWT based authentication
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeRequests(requests -> requests.anyRequest().permitAll())
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint));
 
+        // Custom JWT based authentication
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
