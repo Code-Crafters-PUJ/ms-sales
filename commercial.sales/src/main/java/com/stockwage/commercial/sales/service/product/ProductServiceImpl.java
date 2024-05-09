@@ -3,6 +3,7 @@ package com.stockwage.commercial.sales.service.product;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public Optional<Product> getById(Long id) {
@@ -44,11 +48,17 @@ public class ProductServiceImpl implements ProductService {
     
     @Override
     public List<Product> getAll() {
+        String message = 1 + "," + 2;
+        rabbitTemplate.convertAndSend("update-product-queue", message);
         return productRepository.findAll();
     }
 
     @Override
     public void updateProductQuantity(Long id, Integer quantity) {
+
+        String message = id + "," + quantity;
+        rabbitTemplate.convertAndSend("update-product-queue", message);
+        
         productRepository.updateProductQuantity(id, quantity);
     }
 
