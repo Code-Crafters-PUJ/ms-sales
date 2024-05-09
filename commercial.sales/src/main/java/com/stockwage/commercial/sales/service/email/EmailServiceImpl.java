@@ -30,8 +30,10 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.stockwage.commercial.sales.entity.Bill;
 import com.stockwage.commercial.sales.entity.BillProduct;
+import com.stockwage.commercial.sales.entity.Client;
 import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.repository.BillRepository;
+import com.stockwage.commercial.sales.repository.ClientRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -44,6 +46,9 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     private BillRepository billRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
 
 @Override
 public ResponseEntity<String> sendEmail(Long id) {
@@ -52,17 +57,22 @@ public ResponseEntity<String> sendEmail(Long id) {
     if (!optionalBill.isPresent()){
         return new ResponseEntity<>("Bill not found", HttpStatus.NOT_FOUND);
     } 
-
     Bill bill = optionalBill.get();
+
+    Optional<Client> optionalClient = clientRepository.findById(bill.getClient().getId());
+    if (!optionalClient.isPresent()){
+        return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+    }
+    Client client = optionalClient.get();
 
     MimeMessage message = emailSender.createMimeMessage();
     try {
         String filename = "Bill No." + bill.getId() + ".pdf";
         String pdfFile = filename;
-        String recipient = bill.getEmail();
+        String recipient = client.getEmail();
         String subject = "Bill No." + bill.getId() + " from ";
         String body = "";
-        generatePDF(bill);
+        generatePDF(bill, client);
         byte[] pdfBytes = convertToByteArray(pdfFile);
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(recipient);
@@ -82,7 +92,7 @@ public ResponseEntity<String> sendEmail(Long id) {
 }
 
 
-private void generatePDF(Bill bill) {
+private void generatePDF(Bill bill, Client client) {
     try {
         String filename = "Bill No." + bill.getId() + ".pdf";
         String htmlFile = "bill_template.html";
@@ -91,8 +101,8 @@ private void generatePDF(Bill bill) {
         String templateContent = loadTemplateFromResource(htmlFile);
 
         templateContent = templateContent.replace("%clientName%", bill.getClient().getName());
-        templateContent = templateContent.replace("%clientContact%", bill.getContact());
-        templateContent = templateContent.replace("%clientEmail%", bill.getEmail());
+        templateContent = templateContent.replace("%clientContact%", client.getContact());
+        templateContent = templateContent.replace("%clientEmail%", client.getEmail());
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/ MM/ yyyy");
         String strDate = bill.getDate().format(formatoFecha);
         templateContent = templateContent.replaceAll("%date%", strDate);

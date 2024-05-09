@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,14 @@ public class Client {
 
     @NotNull
     private String card_id;
+
+    @NotNull
+    @Column(name = "contact")
+    private String contact;
+
+    @NotNull
+    @Column(name = "email")
+    private String email;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)

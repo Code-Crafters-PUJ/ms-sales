@@ -63,10 +63,8 @@ public class BillServiceImpl implements BillService {
         bill = Bill.builder()
             .type(billType)
             .date(billDTO.getDate())
-            .contact(billDTO.getContact())
             .seller(billDTO.getSeller())
             .branchId(billDTO.getBranchId())
-            .email(billDTO.getEmail())
             .withholdingTax(billDTO.isWithholdingTax())
             .chargeTax(billDTO.isChargeTax())
             .client(client)
@@ -108,10 +106,8 @@ public class BillServiceImpl implements BillService {
             Bill existingBill = existingBillOptional.get();
             existingBill.setType(billType);
             existingBill.setDate(billDTO.getDate());
-            existingBill.setContact(billDTO.getContact());
             existingBill.setSeller(billDTO.getSeller());
             existingBill.setBranchId(billDTO.getBranchId());
-            existingBill.setEmail(billDTO.getEmail());
             existingBill.setWithholdingTax(billDTO.isWithholdingTax());
             existingBill.setChargeTax(billDTO.isChargeTax());
             existingBill.setClient(optClient.get());
@@ -153,10 +149,8 @@ public class BillServiceImpl implements BillService {
         String type = bill.getType().name();
         billDTO.setType(type);
         billDTO.setDate(bill.getDate());
-        billDTO.setContact(bill.getContact());
         billDTO.setSeller(bill.getSeller());
         billDTO.setBranchId(bill.getBranchId());
-        billDTO.setEmail(bill.getEmail());
         billDTO.setWithholdingTax(bill.isWithholdingTax());
         billDTO.setChargeTax(bill.isChargeTax());
         billDTO.setClientId(bill.getClient().getId());

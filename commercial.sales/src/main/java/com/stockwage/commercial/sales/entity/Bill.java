@@ -44,20 +44,12 @@ public class Bill {
     private LocalDate date;
 
     @NotNull
-    @Column(name = "contact")
-    private String contact;
-
-    @NotNull
     @Column(name = "seller")
     private String seller;
 
     @NotNull
     @Column(name = "branch_id")
     private Long branchId;
-
-    @NotNull
-    @Column(name = "email")
-    private String email;
 
     @NotNull
     @Column(name = "withholding_tax")

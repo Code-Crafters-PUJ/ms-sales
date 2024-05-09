@@ -5,7 +5,9 @@ SELECT pg_create_physical_replication_slot('replication_slot');
 CREATE TABLE IF NOT EXISTS client (
   id SERIAL PRIMARY KEY,
   card_id VARCHAR(45) NOT NULL UNIQUE,
-  name VARCHAR(45) NOT NULL
+  name VARCHAR(45) NOT NULL,
+  contact VARCHAR(45) NOT NULL,
+  email VARCHAR(45) NOT NULL
 );
 
 -- Create table paymentMethod
@@ -21,8 +23,6 @@ CREATE TABLE IF NOT EXISTS bill (
   type CHAR(1) CHECK (type IN ('N', 'E')) NOT NULL,
   date DATE NOT NULL,
   seller VARCHAR(45) NOT NULL,
-  contact VARCHAR(45) NOT NULL,
-  email VARCHAR(45),
   client_id INT NOT NULL,
   paymentMethod_id INT NOT NULL,
   withholding_tax BOOLEAN NOT NULL DEFAULT FALSE,
@@ -54,3 +54,5 @@ CREATE TABLE IF NOT EXISTS bill_has_product (
   FOREIGN KEY (bill_id) REFERENCES bill(id) ON DELETE CASCADE ON UPDATE NO ACTION,
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
+
+INSERT INTO client (name, card_id, contact, email) VALUES ('BAJO MONTO', '0000000000', '0', '0');

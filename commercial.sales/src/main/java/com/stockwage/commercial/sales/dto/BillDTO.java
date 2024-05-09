@@ -14,13 +14,9 @@ public class BillDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    private String contact;
-
     private String seller;
 
     private Long branchId;
-
-    private String email;
 
     private boolean withholdingTax;
 
