@@ -18,7 +18,6 @@ public class ProductUpdateListener {
 
     @RabbitListener(queues = "update-product-queue")
     public void processProductUpdate(@Payload String message) {
-        // Divide el mensaje para obtener el ID y la cantidad
         String[] parts = message.split(",");
         Long productId = Long.parseLong(parts[0]);
         String productName = parts[1];
