@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS product (
   name VARCHAR(45) NOT NULL,
   description VARCHAR(45) NOT NULL,
   quantity INT NOT NULL,
-  costPrice DOUBLE PRECISION NOT NULL,
   salePrice DOUBLE PRECISION NOT NULL,
   discount INT,
   Category_id INT NOT NULL

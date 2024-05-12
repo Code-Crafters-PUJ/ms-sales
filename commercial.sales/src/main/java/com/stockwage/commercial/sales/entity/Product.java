@@ -27,9 +27,6 @@ public class Product {
     @NotNull
     private Integer quantity;
 
-    @NotNull
-    @Column(name = "costprice")
-    private Double costPrice;
 
     @NotNull
     @Column(name = "saleprice")
