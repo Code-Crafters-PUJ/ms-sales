@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq.listener.product;
+package com.stockwage.commercial.sales.rabbitmq.consumer.product;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.service.product.ProductService;
 
 @Component
-public class ProductCreateUpdateListener {
+public class ProductCreateUpdateConsumer {
 
     @Autowired
     ProductService productService;

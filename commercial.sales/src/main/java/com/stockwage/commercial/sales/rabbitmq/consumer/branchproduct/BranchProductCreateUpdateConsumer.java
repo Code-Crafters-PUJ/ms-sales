@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq.listener.branchproduct;
+package com.stockwage.commercial.sales.rabbitmq.consumer.branchproduct;
 
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ import com.stockwage.commercial.sales.service.branchproduct.BranchProductService
 import com.stockwage.commercial.sales.service.product.ProductService;
 
 @Component
-public class BranchProductCreateUpdateListener {
+public class BranchProductCreateUpdateConsumer {
 
     @Autowired
     BranchProductService branchProductService;

@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq.listener.product;
+package com.stockwage.commercial.sales.rabbitmq.consumer.product;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.stockwage.commercial.sales.service.product.ProductService;
 
 @Component
-public class ProductDeleteListener {
+public class ProductDeleteConsumer {
 
     @Autowired
     ProductService productService;

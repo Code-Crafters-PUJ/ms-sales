@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq.listener.branchproduct;
+package com.stockwage.commercial.sales.rabbitmq.consumer.branchproduct;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.stockwage.commercial.sales.service.branchproduct.BranchProductService;
 
 @Component
-public class BranchProductDeleteListener {
+public class BranchProductDeleteConsumer {
     @Autowired
     BranchProductService branchProductService;
 
