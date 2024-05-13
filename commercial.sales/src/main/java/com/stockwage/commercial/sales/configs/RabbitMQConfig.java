@@ -27,4 +27,9 @@ public class RabbitMQConfig {
         return new Queue("delete-branch-product-queue", true);
     }
 
+    @Bean
+    public Queue branchProductQuantityUpdateQueue() {
+        return new Queue("branch-product-quantity-update-queue", true);
+    }
+
 }
