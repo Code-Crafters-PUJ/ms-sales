@@ -32,4 +32,8 @@ public class RabbitMQConfig {
         return new Queue("branch-product-quantity-update-queue", true);
     }
 
+    @Bean
+    public Queue branchNameGetQueue() {
+        return new Queue("branch-name-get-queue", true);
+    }
 }
