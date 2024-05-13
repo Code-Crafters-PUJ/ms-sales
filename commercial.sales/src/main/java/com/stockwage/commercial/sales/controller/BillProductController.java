@@ -15,6 +15,7 @@ import com.stockwage.commercial.sales.dto.BillProductDTO;
 import com.stockwage.commercial.sales.entity.BillProduct;
 import com.stockwage.commercial.sales.service.bill.BillService;
 import com.stockwage.commercial.sales.service.billproduct.BillProductService;
+import com.stockwage.commercial.sales.service.email.EmailService;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,6 +39,9 @@ public class BillProductController {
     @Autowired
     private BillService billService;
 
+    @Autowired
+    private EmailService emailService;
+    
     @GetMapping("/all")
     @Operation(summary = "Get all products of the bills", description = "Retrieves a list of all bills's products")
     @ApiResponse(responseCode = "200", description = "Bills retrieved successfully")
@@ -79,6 +83,17 @@ public class BillProductController {
             if (newBillProduct == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
+        }
+        Optional<BillDTO> optionalBillDTO = billService.getById(billId);
+        if (!optionalBillDTO.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        BillDTO billDTO = optionalBillDTO.get();
+        if(billDTO.getType().equals("E")){
+            //Electronic Bill
+            emailService.sendEmail(billId);
+        } else {
+            billService.generatePDF(billId);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

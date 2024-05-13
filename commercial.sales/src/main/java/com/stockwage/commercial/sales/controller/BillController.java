@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,16 @@ import org.springframework.web.bind.annotation.*;
 
 import com.stockwage.commercial.sales.dto.BillDTO;
 import com.stockwage.commercial.sales.entity.Bill;
+import com.stockwage.commercial.sales.entity.Client;
 import com.stockwage.commercial.sales.service.bill.BillService;
+import com.stockwage.commercial.sales.service.client.ClientService;
+
+import org.springframework.http.MediaType;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +35,9 @@ public class BillController {
     
     @Autowired
     private BillService billService;
+
+    @Autowired
+    private ClientService clientService;
 
 
     @GetMapping("/all")
@@ -98,6 +111,50 @@ public class BillController {
         } else {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/getPDF/{billId}")
+    @Operation(summary = "Get a PDF of a bill", description = "Get a PDF file for the bill")
+    @ApiResponse(responseCode = "200", description = "PDF bill retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid ID supplied")
+    @ApiResponse(responseCode = "404", description = "Bill not found")
+    public ResponseEntity<byte[]> getPDF(@PathVariable Long billId) throws IOException {
+        // Validate the bill ID
+        if (billId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        // Retrieve the bill from the service
+        Optional<BillDTO> optionalBill = billService.getById(billId);
+        if (!optionalBill.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        BillDTO billDTO = optionalBill.get();
+
+        // Retrieve the client information associated with the bill
+        Optional<Client> optionalClient = clientService.getById(billDTO.getClientId());
+        if (!optionalClient.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Client client = optionalClient.get();
+
+        // File path of the PDF
+        String pdfFilePath = "./bills/Bill-" + client.getCard_id() + "-" + billId + ".pdf";
+
+        // Read the content of the PDF file into a byte array
+        Path path = Paths.get(pdfFilePath);
+        byte[] pdfContent = Files.readAllBytes(path);
+
+        // Build the response headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "Bill No." + billId + ".pdf");
+
+        // Return a ResponseEntity with the PDF content and configured headers
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(pdfContent.length)
+                .body(pdfContent);
     }
 
 }
