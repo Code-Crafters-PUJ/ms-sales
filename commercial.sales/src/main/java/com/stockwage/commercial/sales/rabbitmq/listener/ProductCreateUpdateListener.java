@@ -18,7 +18,7 @@ public class ProductCreateUpdateListener {
     @Autowired
     ProductService productService;
 
-    @RabbitListener(queues = "update-product-queue")
+    @RabbitListener(queues = "create-update-product-queue")
     public void processProductUpdate(@Payload String message) {
 
         ObjectMapper objectMapper = new ObjectMapper();
