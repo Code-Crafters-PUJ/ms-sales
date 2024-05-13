@@ -3,9 +3,11 @@ package com.stockwage.commercial.sales.service.product;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stockwage.commercial.sales.dto.ProductDTO;
 import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.repository.ProductRepository;
 
@@ -16,6 +18,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Override
+    public Product DtoToEntity(ProductDTO productDTO) {
+        return modelMapper.map(productDTO, Product.class);
+    }
 
     @Override
     public Optional<Product> getById(Long id) {
