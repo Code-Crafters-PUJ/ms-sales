@@ -36,9 +36,7 @@ CREATE TABLE IF NOT EXISTS product (
   id SERIAL PRIMARY KEY,
   name VARCHAR(45) NOT NULL,
   description VARCHAR(45) NOT NULL,
-  quantity INT NOT NULL,
   salePrice DOUBLE PRECISION NOT NULL,
-  discount INT,
   Category_id INT NOT NULL
 );
 
@@ -51,6 +49,16 @@ CREATE TABLE IF NOT EXISTS bill_has_product (
   unit_price DOUBLE PRECISION NOT NULL,
   discount_percentage INT NOT NULL,
   FOREIGN KEY (bill_id) REFERENCES bill(id) ON DELETE CASCADE ON UPDATE NO ACTION,
+  FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
+-- Create table branch_has_product
+CREATE TABLE IF NOT EXISTS branch_has_product (
+  id SERIAL PRIMARY KEY,
+  branch_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  discount INT DEFAULT 0,
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 

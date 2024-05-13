@@ -48,5 +48,5 @@ public class EmailController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    
 }

@@ -50,10 +50,8 @@ public class ClientServiceImpl implements ClientService{
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isPresent()) {
             clientRepository.deleteById(id);
-            System.out.println("Client deleted successfully");
             return true;
         } else {
-            System.out.println("Client not found");
             return false;
         }
     }

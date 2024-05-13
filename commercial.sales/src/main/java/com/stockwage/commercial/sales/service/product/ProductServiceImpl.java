@@ -47,10 +47,4 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAll() {
         return productRepository.findAll();
     }
-
-    @Override
-    public void updateProductQuantity(Long id, Integer quantity) {   
-        productRepository.updateProductQuantity(id, quantity);
-    }
-
 }

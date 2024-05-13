@@ -121,5 +121,4 @@ public class ClientController {
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
-    
 }

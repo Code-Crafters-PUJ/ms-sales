@@ -15,7 +15,6 @@ import com.stockwage.commercial.sales.dto.BillProductDTO;
 import com.stockwage.commercial.sales.entity.BillProduct;
 import com.stockwage.commercial.sales.service.bill.BillService;
 import com.stockwage.commercial.sales.service.billproduct.BillProductService;
-import com.stockwage.commercial.sales.service.product.ProductService;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,9 +36,6 @@ public class BillProductController {
     private BillProductService billProductService;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
     private BillService billService;
 
     @GetMapping("/all")
@@ -59,23 +55,8 @@ public class BillProductController {
         if (!existingBillOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.println("Aqui estamos");
         List<BillProductDTO> bills = billProductService.getAllByBill(billId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
-    }
-
-    @PostMapping("/addToBill/{billId}")
-    @Transactional
-    @Operation(summary = "Add a new product to the bill", description = "Adds a new product to the bill")
-    @ApiResponse(responseCode = "201", description = "Product added successfully")
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    public ResponseEntity<?> addBill(@RequestBody BillProductDTO billProductDTO, @PathVariable Long billId) {
-        BillProduct newBillProduct = billProductService.save(billProductDTO, billId);
-        if (newBillProduct == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        productService.updateProductQuantity(billProductDTO.getProduct_id(), billProductDTO.getQuantity());
-        return new ResponseEntity<>(newBillProduct, HttpStatus.CREATED);
     }
 
     @PostMapping("/addProductsToBill/{billId}")
@@ -90,17 +71,16 @@ public class BillProductController {
         for (BillProductDTO billProductDTO : billProducts) {
             if (billId == null || billProductDTO.getProduct_id() == null || billProductDTO.getQuantity() == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }else{
+                billProductDTO.setBill_id(billId);
             }
             BillProduct newBillProduct = billProductService.save(billProductDTO, billId);
+            
             if (newBillProduct == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            productService.updateProductQuantity(billProductDTO.getProduct_id(), billProductDTO.getQuantity());
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    
-    
 }
-

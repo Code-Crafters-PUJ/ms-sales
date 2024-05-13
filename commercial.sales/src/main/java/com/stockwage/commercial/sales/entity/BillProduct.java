@@ -32,11 +32,9 @@ public class BillProduct {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @NotNull
     @Column(name = "unit_price")
     private Double unitPrice;
 
-    @NotNull
     @Column(name = "discount_percentage")
     private Integer discountPercentage;
    

@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 import com.stockwage.commercial.sales.dto.BillProductDTO;
 import com.stockwage.commercial.sales.entity.Bill;
 import com.stockwage.commercial.sales.entity.BillProduct;
+import com.stockwage.commercial.sales.entity.BranchProduct;
 import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.repository.BillProductRepository;
 import com.stockwage.commercial.sales.repository.BillRepository;
+import com.stockwage.commercial.sales.repository.BranchProductRepository;
 import com.stockwage.commercial.sales.repository.ProductRepository;
+import com.stockwage.commercial.sales.service.branchproduct.BranchProductService;
 
 @Service
 public class BillProductServiceImpl implements BillProductService{
@@ -26,6 +29,12 @@ public class BillProductServiceImpl implements BillProductService{
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private BranchProductRepository branchProductRepository;
+
+    @Autowired
+    private BranchProductService branchProductService;
     
     @Override
     public BillProduct save(BillProductDTO billProductDTO, Long billId) {
@@ -41,14 +50,26 @@ public class BillProductServiceImpl implements BillProductService{
         bill = optionalBill.get();
         product = optionalProduct.get();
 
+        BranchProduct branchProduct = branchProductRepository.findByProductIdAndBranchId(product.getId(), bill.getBranchId());
+        if (branchProduct == null) {
+            return null;
+        }
+        
         BillProduct billProduct = new BillProduct();
+
         billProduct.setBill(bill);
+        billProduct.setProduct(product);
         billProduct.setQuantity(billProductDTO.getQuantity());
         billProduct.setUnitPrice(product.getSalePrice());
-        billProduct.setDiscountPercentage(product.getDiscount());
-        billProduct.setProduct(product);
-        return billProductRepository.save(billProduct);
-
+        billProduct.setDiscountPercentage(branchProduct.getDiscount());
+        BillProduct newBillProduct = billProductRepository.save(billProduct);
+        if( newBillProduct != null) {
+            Integer newQuantity = branchProduct.getQuantity() - billProductDTO.getQuantity();
+            if(branchProductService.updateQuantity(product.getId(), billRepository.findById(billId).get().getBranchId(), newQuantity)){
+                return newBillProduct;   
+            }
+        }
+        return null;
     }
 
 	@Override

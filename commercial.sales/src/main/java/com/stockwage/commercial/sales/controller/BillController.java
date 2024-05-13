@@ -77,7 +77,6 @@ public class BillController {
     @ApiResponse(responseCode = "404", description = "Bill not found")
     public ResponseEntity<?> updateBill(@PathVariable Long id, @RequestBody BillDTO billDTO) {
         if (id == null || billDTO == null) {
-            System.out.println("ID or billDTO is null");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Bill updatedBill = billService.update(id, billDTO);
