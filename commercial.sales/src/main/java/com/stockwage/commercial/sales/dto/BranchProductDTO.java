@@ -1,5 +1,8 @@
 package com.stockwage.commercial.sales.dto;
 
+import lombok.Data;
+
+@Data
 public class BranchProductDTO {
     private Long id;
     private Long branchId;
