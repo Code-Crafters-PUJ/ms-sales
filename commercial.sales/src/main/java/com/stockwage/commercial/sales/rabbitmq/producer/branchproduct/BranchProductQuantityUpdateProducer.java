@@ -15,6 +15,6 @@ public class BranchProductQuantityUpdateProducer {
 
         String message = productId + "," + branchId + "," + newQuantity;
         amqpTemplate.convertAndSend(queueName, message);
-        System.out.println("Mensaje de actualización de cantidad de producto de sucursal enviado: " + message);
+        System.out.println("Message of branch product quantity update sent: " + message);
     }
 }
