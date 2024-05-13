@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq.listener;
+package com.stockwage.commercial.sales.rabbitmq.listener.product;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
