@@ -1,4 +1,4 @@
-package com.stockwage.commercial.sales.rabbitmq;
+package com.stockwage.commercial.sales.rabbitmq.listener;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ import com.stockwage.commercial.sales.entity.Product;
 import com.stockwage.commercial.sales.service.product.ProductService;
 
 @Component
-public class ProductUpdateListener {
+public class ProductCreateUpdateListener {
 
     @Autowired
     ProductService productService;
@@ -24,15 +24,28 @@ public class ProductUpdateListener {
         ObjectMapper objectMapper = new ObjectMapper();
         ProductDTO productDTO = null;
         try {
+            // Convert the message to ProductDTO
             productDTO = objectMapper.readValue(message, ProductDTO.class);
+            
+            // Check if the product exists
             Optional<Product> existingProduct = productService.getById(productDTO.getId());
             if (existingProduct.isPresent()) {
-                Product product = productService.DtoToEntity(productDTO);
-                productService.update(product);
+                // If the product exists, update it
+                Product existing = existingProduct.get();
+                existing.setName(productDTO.getName());
+                existing.setDescription(productDTO.getDescription());
+                existing.setSalePrice(productDTO.getSalePrice());
+                existing.setCategoryId(productDTO.getCategoryId());
+                productService.update(existing);
+                System.out.println("Product with ID " + productDTO.getId() + " updated.");
             } else {
-                System.err.println("The product with ID " + productDTO.getId() + " does not exist.");
+                // If the product does not exist, create it
+                Product newProduct = productService.DtoToEntity(productDTO);
+                productService.save(newProduct);
+                System.out.println("Product with ID " + productDTO.getId() + " created.");
             }
         } catch (Exception e) {
+            // Print an error message if an exception occurs during message processing
             e.printStackTrace();
             System.err.println("Error processing message: " + message);
         }
