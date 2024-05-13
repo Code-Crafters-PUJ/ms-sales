@@ -12,6 +12,7 @@ import com.stockwage.commercial.sales.entity.Bill;
 import com.stockwage.commercial.sales.entity.BillProduct;
 import com.stockwage.commercial.sales.entity.BranchProduct;
 import com.stockwage.commercial.sales.entity.Product;
+import com.stockwage.commercial.sales.rabbitmq.producer.branchproduct.BranchProductQuantityUpdateProducer;
 import com.stockwage.commercial.sales.repository.BillProductRepository;
 import com.stockwage.commercial.sales.repository.BillRepository;
 import com.stockwage.commercial.sales.repository.BranchProductRepository;
@@ -36,6 +37,8 @@ public class BillProductServiceImpl implements BillProductService{
     @Autowired
     private BranchProductService branchProductService;
     
+    @Autowired
+    private BranchProductQuantityUpdateProducer branchProductQuantityUpdateProducer;
     @Override
     public BillProduct save(BillProductDTO billProductDTO, Long billId) {
         Bill bill = new Bill();
@@ -66,6 +69,7 @@ public class BillProductServiceImpl implements BillProductService{
         if( newBillProduct != null) {
             Integer newQuantity = branchProduct.getQuantity() - billProductDTO.getQuantity();
             if(branchProductService.updateQuantity(product.getId(), billRepository.findById(billId).get().getBranchId(), newQuantity)){
+                branchProductQuantityUpdateProducer.sendBranchProductQuantityUpdateMessage(product.getId(), billRepository.findById(billId).get().getBranchId(), newQuantity);
                 return newBillProduct;   
             }
         }
