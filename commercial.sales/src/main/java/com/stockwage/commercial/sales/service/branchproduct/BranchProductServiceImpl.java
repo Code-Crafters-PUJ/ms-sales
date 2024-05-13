@@ -38,8 +38,7 @@ public class BranchProductServiceImpl implements BranchProductService{
 
     @Override
     public Optional<BranchProduct> getById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+        return branchProductRepository.findById(id);
     }
 
     @Override
