@@ -12,6 +12,12 @@ public class RabbitMQConfig {
         return new Queue("create-update-product-queue", true);
     }
 
+    //create-update-branch-product-queue
+    @Bean
+    public Queue createUpdateBranchProductQueue(){
+        return new Queue("create-update-branch-product-queue", true);
+    }
+
     @Bean
     public Queue deleteProductQueue() {
         return new Queue("delete-product-queue", true);
