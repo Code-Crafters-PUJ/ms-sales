@@ -14,4 +14,5 @@ public interface BranchProductService {
     BranchProduct update(BranchProduct branchProduct);
     List<BranchProduct> getAll();
     Boolean updateQuantity(Long productId, Long branchId, Integer newQuantity);
+    Optional<BranchProduct> findByProductIdAndBranchId(Long productId, Long branchId);
 }

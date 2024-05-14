@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class BranchProductDTO {
-    private Long id;
     private Long branchId;
     private Long productId;
     private Integer discount;

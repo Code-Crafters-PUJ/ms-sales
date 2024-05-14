@@ -67,4 +67,14 @@ public class BranchProductServiceImpl implements BranchProductService{
        return branchProductRepository.findAll();
     }
 
+    @Override
+    public Optional<BranchProduct> findByProductIdAndBranchId(Long productId, Long branchId) {
+        BranchProduct BranchProduct = branchProductRepository.findByProductIdAndBranchId(productId, branchId);
+        if (BranchProduct != null) {
+            return Optional.of(BranchProduct);
+        } else {
+            return Optional.empty();
+        } 
+    }
+
 }

@@ -26,15 +26,17 @@ public class BranchProductCreateUpdateConsumer {
     @RabbitListener(queues = "create-update-branch-product-queue")
     public void processBranchProductUpdate(@Payload String message) {
 
+        //message a Json, y JSON a BranchProductDTO
         ObjectMapper objectMapper = new ObjectMapper();
         BranchProductDTO branchProductDTO = null;
         try {
             // Convert the message to BranchProductDTO
             branchProductDTO = objectMapper.readValue(message, BranchProductDTO.class);
+
+            Optional<BranchProduct> optionalBranchProduct = branchProductService.findByProductIdAndBranchId(branchProductDTO.getProductId(), branchProductDTO.getBranchId());
+
             
-            // Check if the branch product exists
-            Optional<BranchProduct> existingBranchProduct = branchProductService.getById(branchProductDTO.getId());
-            if (existingBranchProduct.isPresent()) {
+            if (optionalBranchProduct.isPresent()) {
                 // If the branch product exists, update it
                 Optional<Product> optionalProduct = null;
                 try{
@@ -45,7 +47,7 @@ public class BranchProductCreateUpdateConsumer {
                 }
                 Product product = optionalProduct.get();
                 
-                BranchProduct existing = existingBranchProduct.get();
+                BranchProduct existing = optionalBranchProduct.get();
                 existing.setQuantity(branchProductDTO.getQuantity());
                 existing.setDiscount(branchProductDTO.getDiscount());
                 existing.setBranchId(branchProductDTO.getBranchId());
@@ -54,17 +56,19 @@ public class BranchProductCreateUpdateConsumer {
 
                 // Update other fields as needed
                 branchProductService.update(existing);
-                System.out.println("Branch product with ID " + branchProductDTO.getId() + " updated.");
+                System.out.println("Branch product with branch ID " + branchProductDTO.getBranchId() + "and product ID " + branchProductDTO.getProductId() + " updated.");
             } else {
                 // If the branch product does not exist, create it
                 BranchProduct newBranchProduct = branchProductService.DtoToEntity(branchProductDTO);
                 branchProductService.save(newBranchProduct);
-                System.out.println("Branch product with ID " + branchProductDTO.getId() + " created.");
+                System.out.println("Branch product with branch ID " + branchProductDTO.getBranchId() + "and product ID " + branchProductDTO.getProductId() + " created.");
             }
+
         } catch (Exception e) {
             // Print an error message if an exception occurs during message processing
             e.printStackTrace();
             System.err.println("Error processing branch product message: " + message);
         }
+
     }
 }
