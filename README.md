@@ -20,10 +20,12 @@ mvn clean package -DskipTests
 Compile the microservice, the database and the database replica:
 ```bash
 cd ..
-docker compose -f compose-app.yml build
+docker compose -f compose-app.yml build java_app
+docker-compose build
 ```
 
 Start the microservice, the database and the database replica:
 ```bash
-docker compose -f compose-app.yml up
+docker compose -f compose-app.yml up java_app
+docker-compose up
 ```
