@@ -8,6 +8,10 @@ To do that:
 
 To run this ms:
 
+If you don´t have RabbitMQ running yet:
+```bash
+docker run -d --name rabbit-server -p 8060:15672 -p 5672:5672 rabbitmq:3.9-management
+```
 
 Compile the Java microservice application:
 ```bash
