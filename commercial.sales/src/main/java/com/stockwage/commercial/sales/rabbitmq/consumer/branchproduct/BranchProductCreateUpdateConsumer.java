@@ -29,7 +29,9 @@ public class BranchProductCreateUpdateConsumer {
         //message a Json, y JSON a BranchProductDTO
         ObjectMapper objectMapper = new ObjectMapper();
         BranchProductDTO branchProductDTO = null;
+
         try {
+
             // Convert the message to BranchProductDTO
             branchProductDTO = objectMapper.readValue(message, BranchProductDTO.class);
 
@@ -59,7 +61,18 @@ public class BranchProductCreateUpdateConsumer {
                 System.out.println("Branch product with branch ID " + branchProductDTO.getBranchId() + "and product ID " + branchProductDTO.getProductId() + " updated.");
             } else {
                 // If the branch product does not exist, create it
-                BranchProduct newBranchProduct = branchProductService.DtoToEntity(branchProductDTO);
+                Optional<Product> optProduct = productService.getById(branchProductDTO.getProductId());
+                if (!optProduct.isPresent()) {
+                    System.err.println("Error processing branch product message: " + message);
+                    return;
+                }
+                Product product = optProduct.get();
+                BranchProduct newBranchProduct = new BranchProduct();
+                newBranchProduct.setDiscount(branchProductDTO.getDiscount());
+                newBranchProduct.setQuantity(branchProductDTO.getQuantity());
+                newBranchProduct.setBranchId(branchProductDTO.getBranchId());
+                newBranchProduct.setProduct(product);
+                
                 branchProductService.save(newBranchProduct);
                 System.out.println("Branch product with branch ID " + branchProductDTO.getBranchId() + "and product ID " + branchProductDTO.getProductId() + " created.");
             }
